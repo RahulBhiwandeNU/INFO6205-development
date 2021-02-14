@@ -209,7 +209,8 @@ public class UF_HWQUPC implements UF {
                 numberOfComp--;
             }
         }
-
+        System.out.println("The number of nodes are : " + n);
+        System.out.println("Number of connections are : " + numberOfConn);
         return numberOfComp;
     }
 
