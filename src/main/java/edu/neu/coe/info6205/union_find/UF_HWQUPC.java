@@ -194,29 +194,29 @@ public class UF_HWQUPC implements UF {
         return;
     }
 
-    private static int countConnections(int n) {
-        int numberOfConn = 0;
-        int numberOfComp = n;
+    private void countPairs(int n, int numberOfConn) {
         Random r = new Random();
         UF_HWQUPC c = new UF_HWQUPC(n, true);
         for (int i = 0; i < n; i++) {
-            int x = r.nextInt(n);
-            int y = r.nextInt(n);
-            if (!c.connected(x, y)) {
-                c.union(x, y);
-                System.out.println(x + "," + y);
-                numberOfConn++;
-                numberOfComp--;
+            while (count != 1) {
+                int x = r.nextInt(n);
+                int y = r.nextInt(n);
+                if (!c.connected(x, y)) {
+                    c.union(x, y);
+                    System.out.println(x + "," + y);
+                    numberOfConn++;
+                    count--;
+                }
             }
         }
         System.out.println("The number of nodes are : " + n);
-        System.out.println("Number of connections are : " + numberOfConn);
-        return numberOfComp;
+        System.out.println("The number of pairs are : " + numberOfConn);
     }
 
     public static void main(String[] args) {
         int n = Integer.parseInt(args[0]);
-        int noOfConn = countConnections(n);
-        System.out.println("The number of components are : " + noOfConn);
+        UF_HWQUPC u = new UF_HWQUPC(n);
+        u.countPairs(n, 0);
+        System.out.println("The number of components are : " + u.components());
     }
 }
