@@ -197,16 +197,14 @@ public class UF_HWQUPC implements UF {
     private void countPairs(int n, int numberOfConn) {
         Random r = new Random();
         UF_HWQUPC c = new UF_HWQUPC(n, true);
-        for (int i = 0; i < n; i++) {
-            while (count != 1) {
-                int x = r.nextInt(n);
-                int y = r.nextInt(n);
-                if (!c.connected(x, y)) {
-                    c.union(x, y);
-                    System.out.println(x + "," + y);
-                    numberOfConn++;
-                    count--;
-                }
+        while (count != 1) {
+            int x = r.nextInt(n);
+            int y = r.nextInt(n);
+            if (!c.connected(x, y)) {
+                c.union(x, y);
+                System.out.println(x + "," + y);
+                numberOfConn++;
+                count--;
             }
         }
         System.out.println("The number of nodes are : " + n);
