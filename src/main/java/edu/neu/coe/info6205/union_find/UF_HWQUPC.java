@@ -82,7 +82,6 @@ public class UF_HWQUPC implements UF {
     public int find(int p) {
         validate(p);
         int root = p;
-        // TO BE IMPLEMENTED
         while (root != parent[root]) root = parent[root];
         if (pathCompression) doPathCompression(p);
         return root;
@@ -171,6 +170,7 @@ public class UF_HWQUPC implements UF {
     private boolean pathCompression;
 
     private void mergeComponents(int i, int j) {
+        if (i == j) return;
         if (height[i] < height[j]) {
             parent[i] = j;
         } else if (height[i] > height[j]) {
@@ -179,7 +179,7 @@ public class UF_HWQUPC implements UF {
             parent[j] = i;
             height[i]++;
         }
-        count--;
+        //count--;
     }
 
     /**
@@ -194,27 +194,30 @@ public class UF_HWQUPC implements UF {
         return;
     }
 
-    private void countPairs(int n, int numberOfConn) {
+    public static int countPairs(int n) {
+        int connections = 0;
+        UF_HWQUPC u = new UF_HWQUPC(n);
         Random r = new Random();
-        UF_HWQUPC c = new UF_HWQUPC(n, true);
-        while (count != 1) {
-            int x = r.nextInt(n);
-            int y = r.nextInt(n);
-            if (!c.connected(x, y)) {
-                c.union(x, y);
-                System.out.println(x + "," + y);
-                numberOfConn++;
-                count--;
+        while (u.components() != 1) {
+            connections++;
+            int i = r.nextInt(n);
+            int j = r.nextInt(n);
+            if (!u.connected(i, j)) {
+                u.union(i, j);
             }
         }
-        System.out.println("The number of nodes are : " + n);
-        System.out.println("The number of pairs are : " + numberOfConn);
+        return connections;
     }
+
 
     public static void main(String[] args) {
         int n = Integer.parseInt(args[0]);
-        UF_HWQUPC u = new UF_HWQUPC(n);
-        u.countPairs(n, 0);
-        System.out.println("The number of components are : " + u.components());
+        int sum = 0;
+        for(int i = 0;i<1000;i++) {
+            sum = sum + countPairs(n);
+        }
+        System.out.println("The number of nodes (n) : " + n);
+        System.out.println("The number of connections (m) : " + sum/1000);
+
     }
 }
