@@ -46,15 +46,16 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
 
     /**
      * Sort the sub-array xs:from:to using insertion sort.
-     *
-     * @param xs   sort the array xs from "from" to "to".
+     *  @param xs   sort the array xs from "from" to "to".
      * @param from the index of the first element to sort
      * @param to   the index of the first element not to sort
      */
     public void sort(X[] xs, int from, int to) {
         final Helper<X> helper = getHelper();
-
-        // TO BE IMPLEMENTED
+        for (int i=from; i<to; i++)
+            for (int j=i; j>from && helper.compare(xs,j-1,j) > 0; j--)
+                helper.swap(xs, j-1, j);
+        return;
     }
 
     /**

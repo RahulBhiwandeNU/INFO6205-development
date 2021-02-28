@@ -1,19 +1,9 @@
-/**
- * Original code:
- * Copyright © 2000–2017, Robert Sedgewick and Kevin Wayne.
- * <p>
- * Modifications:
- * Copyright (c) 2017. Phasmid Software
- */
 package edu.neu.coe.info6205.union_find;
 
 import java.util.Arrays;
 import java.util.Random;
 
-/**
- * Height-weighted Quick Union with Path Compression
- */
-public class UF_HWQUPC implements UF {
+public class UF_HWQUPC_alternative implements UF {
     /**
      * Ensure that site p is connected to site q,
      *
@@ -33,7 +23,7 @@ public class UF_HWQUPC implements UF {
      * @param pathCompression whether to use path compression
      * @throws IllegalArgumentException if {@code n < 0}
      */
-    public UF_HWQUPC(int n, boolean pathCompression) {
+    public UF_HWQUPC_alternative(int n, boolean pathCompression) {
         count = n;
         parent = new int[n];
         height = new int[n];
@@ -53,7 +43,7 @@ public class UF_HWQUPC implements UF {
      * @param n the number of sites
      * @throws IllegalArgumentException if {@code n < 0}
      */
-    public UF_HWQUPC(int n) {
+    public UF_HWQUPC_alternative(int n) {
         this(n, true);
     }
 
@@ -83,7 +73,14 @@ public class UF_HWQUPC implements UF {
         validate(p);
         int root = p;
         while (root != parent[root]) root = parent[root];
-        if (pathCompression) doPathCompression(p);
+        if(pathCompression) {
+            while (p != root) {
+                int node;
+                node = parent[p];
+                parent[p] = root;
+                p = node;
+            }
+        }
         return root;
     }
 
@@ -179,24 +176,18 @@ public class UF_HWQUPC implements UF {
             parent[j] = i;
             height[i]++;
         }
-        //count--;
     }
 
     /**
      * This implements the single-pass path-halving mechanism of path compression
      */
     private void doPathCompression(int i) {
-        // TO BE IMPLEMENTED update parent to value of grandparent
-        while (i != parent[i]) {
-            parent[i] = parent[parent[i]];
-            i = parent[i];
-        }
         return;
     }
 
     public static int countPairs(int n) {
         int connections = 0;
-        UF_HWQUPC u = new UF_HWQUPC(n);
+        UF_HWQUPC_alternative u = new UF_HWQUPC_alternative(n);
         Random r = new Random();
         while (u.components() != 1) {
             connections++;
